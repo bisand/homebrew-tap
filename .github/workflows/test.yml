@@ -11,6 +11,10 @@ on:
 jobs:
   casks:
     runs-on: macos-14
+    env:
+      # The online audit asks GitHub about the release; anonymous requests
+      # from a shared runner run out of their hourly allowance.
+      HOMEBREW_GITHUB_API_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
       # Homebrew loads a third-party tap's casks only once it is trusted.
