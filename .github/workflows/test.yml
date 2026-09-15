@@ -1,0 +1,34 @@
+# Checks every cask in the tap the way Homebrew itself would, and installs
+# and uninstalls it on a Mac.
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  casks:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      # Homebrew loads a third-party tap's casks only once it is trusted.
+      - name: Tap this checkout
+        run: |
+          brew trust --tap bisand/tap
+          brew tap bisand/tap "$GITHUB_WORKSPACE"
+      - name: Style
+        run: brew style bisand/tap
+      - name: Audit
+        run: |
+          for cask in Casks/*.rb; do
+            brew audit --cask --online --strict "bisand/tap/$(basename "$cask" .rb)"
+          done
+      - name: Install and uninstall
+        run: |
+          for cask in Casks/*.rb; do
+            name="bisand/tap/$(basename "$cask" .rb)"
+            brew install --cask "$name"
+            brew uninstall --cask --zap "$name"
+          done
