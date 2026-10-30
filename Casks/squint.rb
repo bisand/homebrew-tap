@@ -1,6 +1,6 @@
 cask "squint" do
-  version "0.1.10"
-  sha256 "e73235aebf0d0eae50331d157bf029213d29900847604ed51d82e4cd912ad9f9"
+  version "0.1.11"
+  sha256 "24a67c1cf084a5479922a270ded385f0332ece91df1724726c69988a4b349b98"
 
   url "https://github.com/bisand/squint/releases/download/v#{version}/squint-#{version}-macos-universal.dmg"
   name "squint"
